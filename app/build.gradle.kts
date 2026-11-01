@@ -8,6 +8,11 @@ android {
         version = release(37)
     }
 
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "wlv.ac.uk.inknote"
         minSdk = 31
@@ -27,8 +32,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
@@ -37,6 +42,7 @@ dependencies {
     implementation(libs.appcompat)
     implementation(libs.constraintlayout)
     implementation(libs.material)
+    implementation(libs.recyclerview)
     testImplementation(libs.junit)
     androidTestImplementation(libs.espresso.core)
     androidTestImplementation(libs.ext.junit)

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="wrap_content"
+    android:orientation="horizontal" android:gravity="center_vertical"
+    android:paddingTop="4dp">
+    <TextView android:id="@+id/section_title"
+        android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+        android:accessibilityHeading="true"
+        android:textAppearance="@style/TextAppearance.InkNest.Library.Section" />
+    <com.google.android.material.button.MaterialButton android:id="@+id/section_action"
+        style="@style/Widget.InkNest.Library.TextButton"
+        android:layout_width="wrap_content" android:layout_height="wrap_content" />
+</LinearLayout>

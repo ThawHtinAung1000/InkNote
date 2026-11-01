@@ -1,5 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="black">#FF000000</color>
-    <color name="white">#FFFFFFFF</color>
+
+    <!-- Background referenced by the existing adaptive launcher icons. -->
+    <color name="ic_launcher_background">@color/inknest_primary</color>
+
+    <!-- Main palette -->
+    <color name="inknest_background">#FAF8FF</color>
+    <color name="inknest_foreground">#201B2A</color>
+
+    <color name="inknest_primary">#6750A4</color>
+    <color name="inknest_primary_foreground">#FFFFFF</color>
+    <color name="inknest_primary_container">#EADDFF</color>
+    <color name="inknest_on_primary_container">#21005D</color>
+
+    <color name="inknest_secondary">#EADDFF</color>
+    <color name="inknest_secondary_foreground">#21005D</color>
+
+    <color name="inknest_accent">#7965AF</color>
+    <color name="inknest_accent_foreground">#FFFFFF</color>
+
+    <!-- Cards, inputs and secondary content -->
+    <color name="inknest_card">#FFFFFF</color>
+    <color name="inknest_card_foreground">#201B2A</color>
+    <color name="inknest_input">#F0EAF9</color>
+    <color name="inknest_muted">#F2ECF9</color>
+    <color name="inknest_muted_foreground">#655F71</color>
+    <color name="inknest_on_surface_variant">#49454E</color>
+
+    <!-- Borders -->
+    <color name="inknest_border">#E8E0F0</color>
+    <color name="inknest_outline">#CAC4D0</color>
+    <color name="inknest_outline_variant">#E8E0F0</color>
+
+    <!-- Status backgrounds and text -->
+    <color name="inknest_success">#D3F0E0</color>
+    <color name="inknest_success_foreground">#1A5C38</color>
+
+    <color name="inknest_destructive">#F9DEDC</color>
+    <color name="inknest_destructive_foreground">#B3261E</color>
+
+    <color name="inknest_warning">#FEF3C7</color>
+    <color name="inknest_warning_foreground">#92400E</color>
+
+    <!-- Dark reference colours -->
+    <color name="inknest_dark_bg">#131018</color>
+    <color name="inknest_dark_surface">#1E1A2C</color>
+    <color name="inknest_dark_foreground">#E8E0F0</color>
+    <color name="inknest_dark_primary">#D0BCFF</color>
+    <color name="inknest_dark_on_surface_variant">#9E98A8</color>
+    <color name="inknest_dark_input">#2A2440</color>
+    <color name="inknest_dark_muted">@color/inknest_dark_input</color>
+    <color name="inknest_dark_outline">#1FFFFFFF</color>
+    <color name="inknest_dark_border">#1AFFFFFF</color>
+
 </resources>
