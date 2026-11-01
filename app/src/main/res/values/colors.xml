@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Background referenced by the existing adaptive launcher icons. -->
+    <color name="ic_launcher_background">@color/inknest_primary</color>
+
     <!-- Main palette -->
     <color name="inknest_background">#FAF8FF</color>
     <color name="inknest_foreground">#201B2A</color>

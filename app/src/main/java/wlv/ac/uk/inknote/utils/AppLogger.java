@@ -4,7 +4,7 @@ package wlv.ac.uk.inknote.utils;
 
 import android.util.Log;
 
-import wlv.ac.uk.BuildConfig;
+import wlv.ac.uk.inknote.BuildConfig;
 
 public final class AppLogger {
 

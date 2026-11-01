@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="22dp"
+    android:height="22dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/inknest_primary"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M2,2L22,22" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/inknest_primary"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M8.5,16.5a5,5 0,0 1,7,0" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/inknest_primary"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M2,8.82a15,15 0,0 1,4.17,-2.65" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/inknest_primary"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M10.66,5.05A16,16 0,0 1,22,8.82" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/inknest_primary"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M5,12.86a10,10 0,0 1,5.17,-2.69" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/inknest_primary"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M16.64,10.35A10,10 0,0 1,19,12.86" />
+    <path
+        android:fillColor="@android:color/transparent"
+        android:strokeColor="@color/inknest_primary"
+        android:strokeWidth="2"
+        android:strokeLineCap="round"
+        android:strokeLineJoin="round"
+        android:pathData="M12,20h0.01" />
+</vector>

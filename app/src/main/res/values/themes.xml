@@ -5,5 +5,18 @@
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
     </style>
 
-    <style name="Theme.InkNote" parent="Base.Theme.InkNote" />
+    <style name="Theme.InkNote" parent="Base.Theme.InkNote">
+        <item name="colorPrimary">@color/inknest_primary</item>
+        <item name="colorOnPrimary">@color/inknest_primary_foreground</item>
+        <item name="colorPrimaryContainer">@color/inknest_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/inknest_on_primary_container</item>
+        <item name="colorSecondary">@color/inknest_secondary</item>
+        <item name="colorOnSecondary">@color/inknest_secondary_foreground</item>
+        <item name="colorSurface">@color/inknest_card</item>
+        <item name="colorOnSurface">@color/inknest_foreground</item>
+        <item name="android:colorBackground">@color/inknest_background</item>
+        <item name="android:windowBackground">@color/inknest_background</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowLightNavigationBar">true</item>
+    </style>
 </resources>

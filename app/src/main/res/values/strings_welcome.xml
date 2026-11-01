@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="welcome_brand" translatable="false">InkNote</string>
+    <string name="welcome_headline">Your ideas, wherever you are</string>
+    <string name="welcome_subhead">Write, capture, and share your thoughts — no connection required.</string>
+    <string name="welcome_offline_title">Write offline</string>
+    <string name="welcome_offline_description">Every post is saved to your device. No signal needed, ever.</string>
+    <string name="welcome_photo_title">Add a photo</string>
+    <string name="welcome_photo_description">Attach images from your gallery. They stay on-device alongside your text.</string>
+    <string name="welcome_share_title">Share when ready</string>
+    <string name="welcome_share_description">Use Android\'s Sharesheet to send your post anywhere, on your terms.</string>
+    <string name="welcome_start">Start writing</string>
+    <string name="welcome_skip">Skip introduction</string>
+    <string name="welcome_reassurance">No account needed to write</string>
+    <string name="welcome_editor_pending">The writing screen is not available yet.</string>
+    <string name="welcome_posts_pending">The posts screen is not available yet.</string>
+    <string name="welcome_dismiss">Dismiss</string>
+</resources>

@@ -1,4 +1,4 @@
-package wlv.ac.uk.inknote.activities;
+package wlv.ac.uk.inknote.ui;
 
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
@@ -7,7 +7,9 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowCompat;
 import androidx.core.view.WindowInsetsCompat;
 
+import wlv.ac.uk.inknote.R;
 import wlv.ac.uk.inknote.databinding.ActivityMainBinding;
+import wlv.ac.uk.inknote.ui.welcome.WelcomeFragment;
 
 public final class MainActivity extends AppCompatActivity {
 
@@ -21,8 +23,22 @@ public final class MainActivity extends AppCompatActivity {
 
         setContentView(binding.getRoot());
 
+        WindowCompat.getInsetsController(getWindow(), binding.getRoot())
+                .setAppearanceLightStatusBars(true);
+        WindowCompat.getInsetsController(getWindow(), binding.getRoot())
+                .setAppearanceLightNavigationBars(true);
+
+        if (savedInstanceState == null) {
+            getSupportFragmentManager().beginTransaction()
+                    .replace(R.id.fragment_container, WelcomeFragment.class, null)
+                    .commit();
+        }
+
         ViewCompat.setOnApplyWindowInsetsListener(binding.getRoot(), (view, windowInsets) -> {
-            Insets insets = windowInsets.getInsets(WindowInsetsCompat.Type.systemBars() | WindowInsetsCompat.Type.ime());
+            Insets insets = windowInsets.getInsets(
+                    WindowInsetsCompat.Type.systemBars()
+                            | WindowInsetsCompat.Type.displayCutout()
+                            | WindowInsetsCompat.Type.ime());
 
             view.setPadding(insets.left, insets.top, insets.right, insets.bottom);
 

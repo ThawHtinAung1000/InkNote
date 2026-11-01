@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <style name="TextAppearance.InkNest.Welcome" parent="TextAppearance.Material3.BodyMedium">
+        <item name="android:fontFamily">sans</item>
+        <item name="android:includeFontPadding">false</item>
+        <item name="android:textColor">@color/inknest_foreground</item>
+        <item name="android:letterSpacing">0</item>
+    </style>
+
+    <style name="TextAppearance.InkNest.Welcome.Brand">
+        <item name="android:textSize">28sp</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:letterSpacing">-0.0214</item>
+    </style>
+
+    <style name="TextAppearance.InkNest.Welcome.Headline">
+        <item name="android:textSize">24sp</item>
+        <item name="android:textFontWeight">700</item>
+        <item name="android:lineHeight">31sp</item>
+        <item name="android:letterSpacing">-0.0125</item>
+    </style>
+
+    <style name="TextAppearance.InkNest.Welcome.Subhead">
+        <item name="android:textSize">@dimen/inknest_text_body</item>
+        <item name="android:lineHeight">23sp</item>
+        <item name="android:textColor">@color/inknest_muted_foreground</item>
+    </style>
+
+    <style name="TextAppearance.InkNest.Welcome.BenefitTitle">
+        <item name="android:textSize">@dimen/inknest_text_body</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:lineHeight">20sp</item>
+    </style>
+
+    <style name="TextAppearance.InkNest.Welcome.BenefitDescription">
+        <item name="android:textSize">@dimen/inknest_text_label</item>
+        <item name="android:lineHeight">20sp</item>
+        <item name="android:textColor">@color/inknest_muted_foreground</item>
+    </style>
+
+    <style name="Widget.InkNest.Welcome.BenefitRow" parent="">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:background">@drawable/bg_welcome_benefit</item>
+        <item name="android:screenReaderFocusable">true</item>
+    </style>
+
+    <style name="Widget.InkNest.Welcome.BenefitIcon" parent="">
+        <item name="android:layout_width">44dp</item>
+        <item name="android:layout_height">44dp</item>
+        <item name="android:padding">11dp</item>
+        <item name="android:background">@drawable/bg_welcome_benefit_icon</item>
+        <item name="android:importantForAccessibility">no</item>
+        <item name="android:contentDescription">@null</item>
+    </style>
+
+    <style name="Widget.InkNest.Welcome.StartButton" parent="Widget.Material3.Button">
+        <item name="android:minHeight">52dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingTop">14dp</item>
+        <item name="android:paddingBottom">14dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textFontWeight">600</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textColor">@color/inknest_primary_foreground</item>
+        <item name="backgroundTint">@color/inknest_primary</item>
+        <item name="cornerRadius">20dp</item>
+        <item name="icon">@drawable/ic_welcome_pencil</item>
+        <item name="iconTint">@color/inknest_primary_foreground</item>
+        <item name="iconSize">20dp</item>
+        <item name="iconPadding">10dp</item>
+        <item name="iconGravity">textStart</item>
+    </style>
+
+    <style name="Widget.InkNest.Welcome.SkipButton" parent="Widget.Material3.Button.TextButton">
+        <item name="android:minHeight">48dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:paddingStart">20dp</item>
+        <item name="android:paddingEnd">20dp</item>
+        <item name="android:paddingTop">12dp</item>
+        <item name="android:paddingBottom">12dp</item>
+        <item name="android:textSize">@dimen/inknest_text_body</item>
+        <item name="android:textFontWeight">500</item>
+        <item name="android:textAllCaps">false</item>
+        <item name="android:letterSpacing">0</item>
+        <item name="android:textColor">@color/inknest_primary</item>
+    </style>
+</resources>

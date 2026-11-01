@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="250dp"
+    android:height="172dp"
+    android:viewportWidth="250"
+    android:viewportHeight="172">
+
+    <!-- Extra viewport room preserves the pen extending beyond the notebook. -->
+    <group android:translateX="15">
+    <!-- Decorative circles retain the export's soft purple accents. -->
+    <path
+        android:fillColor="@color/inknest_primary_container"
+        android:fillAlpha="0.55"
+        android:pathData="M64,28a28,28 0,1 1,-56,0a28,28 0,1 1,56,0" />
+    <path
+        android:fillColor="@color/inknest_primary_container"
+        android:fillAlpha="0.35"
+        android:pathData="M206,26a16,16 0,1 1,-32,0a16,16 0,1 1,32,0" />
+    <path
+        android:fillColor="@color/inknest_primary_container"
+        android:fillAlpha="0.3"
+        android:pathData="M32,121a9,9 0,1 1,-18,0a9,9 0,1 1,18,0" />
+
+    <group>
+        <path
+            android:fillColor="@color/inknest_primary"
+            android:pathData="M31,42H181Q195,42 195,56V158Q195,172 181,172H31Q25,172 25,166V48Q25,42 31,42Z" />
+        <path
+            android:fillColor="#4F378B"
+            android:pathData="M31,42H39V172H31Q25,172 25,166V48Q25,42 31,42Z" />
+        <path
+            android:fillColor="@color/inknest_card"
+            android:pathData="M45,52H176Q186,52 186,62V154Q186,164 176,164H45Q42,164 42,161V55Q42,52 45,52Z" />
+
+        <path
+            android:fillColor="@android:color/transparent"
+            android:strokeColor="@color/inknest_outline_variant"
+            android:strokeWidth="1.5"
+            android:strokeLineCap="round"
+            android:pathData="M54,72.75H174M54,86.75H174M54,100.75H140.4M54,114.75H174M54,128.75H169.2M54,142.75H174" />
+        <path
+            android:fillColor="@color/inknest_destructive_foreground"
+            android:pathData="M154,46H160Q162,46 162,48V76L157,70L152,76V48Q152,46 154,46Z" />
+
+        <group
+            android:pivotX="206"
+            android:pivotY="152"
+            android:rotation="18">
+            <path
+                android:fillColor="#F4A300"
+                android:pathData="M206,62Q210,62 210,66V151Q210,152 209,152H203Q202,152 202,151V66Q202,62 206,62Z" />
+            <path
+                android:fillColor="#C8860A"
+                android:pathData="M201.5,76Q203,76 203,77.5V108.5Q203,110 201.5,110Q200,110 200,108.5V77.5Q200,76 201.5,76Z" />
+            <path
+                android:fillColor="#C8860A"
+                android:pathData="M202,151H210L206,160Z" />
+        </group>
+    </group>
+
+    <path
+        android:fillColor="@color/inknest_secondary"
+        android:fillAlpha="0.8"
+        android:pathData="M166,9.5a3.5,3.5 0,1 1,-7,0a3.5,3.5 0,1 1,7,0" />
+    <path
+        android:fillColor="@color/inknest_primary"
+        android:fillAlpha="0.5"
+        android:pathData="M180,24a2,2 0,1 1,-4,0a2,2 0,1 1,4,0" />
+    <path
+        android:fillColor="@color/inknest_accent"
+        android:fillAlpha="0.45"
+        android:pathData="M35,16.5a2.5,2.5 0,1 1,-5,0a2.5,2.5 0,1 1,5,0" />
+    </group>
+</vector>
