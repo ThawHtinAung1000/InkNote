@@ -21,7 +21,9 @@ public final class AppLogger {
         SEARCH_POSTS,
         DELETE_POST,
         DELETE_POSTS,
-        CLEANUP_IMAGES
+        CLEANUP_IMAGES,
+        READ_ONBOARDING,
+        COMPLETE_ONBOARDING
     }
 
     private AppLogger() {

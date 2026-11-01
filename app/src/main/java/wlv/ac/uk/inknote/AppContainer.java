@@ -2,8 +2,10 @@ package wlv.ac.uk.inknote;
 
 import android.content.Context;
 import wlv.ac.uk.inknote.data.local.InkNoteDbHelper;
+import wlv.ac.uk.inknote.data.local.OnboardingPreferences;
 import wlv.ac.uk.inknote.data.repository.BlogPostRepository;
 import wlv.ac.uk.inknote.services.BlogPostService;
+import wlv.ac.uk.inknote.services.OnboardingService;
 import wlv.ac.uk.inknote.utils.AppExecutors;
 import wlv.ac.uk.inknote.utils.AttachmentFiles;
 
@@ -12,11 +14,13 @@ public final class AppContainer {
     private final AppExecutors executors;
     private final InkNoteDbHelper databaseHelper;
     private final BlogPostService blogPostService;
+    private final OnboardingService onboardingService;
 
     public AppContainer(Context context) {
         Context appContext = context.getApplicationContext();
 
         executors = new AppExecutors();
+        onboardingService = new OnboardingService(new OnboardingPreferences(appContext));
 
         /*
          * Constructing the helper does not open the database.
@@ -43,5 +47,9 @@ public final class AppContainer {
 
     public BlogPostService getBlogPostService() {
         return blogPostService;
+    }
+
+    public OnboardingService getOnboardingService() {
+        return onboardingService;
     }
 }
