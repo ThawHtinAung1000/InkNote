@@ -11,17 +11,26 @@ public class BlogPost {
     private long updatedAt;
 
     private PostAttachment attachment;
+    private boolean draft;
+    private boolean favourite;
 
     public BlogPost() {
     }
 
     public BlogPost(long id, String title, String body, long createdAt, long updatedAt, PostAttachment attachment) {
+        this(id, title, body, createdAt, updatedAt, attachment, false, false);
+    }
+
+    public BlogPost(long id, String title, String body, long createdAt, long updatedAt,
+                    PostAttachment attachment, boolean draft, boolean favourite) {
         this.id = id;
         this.title = title;
         this.body = body;
         this.createdAt = createdAt;
         this.updatedAt = updatedAt;
         this.attachment = attachment;
+        this.draft = draft;
+        this.favourite = favourite;
     }
 
     public long getId() {
@@ -74,5 +83,21 @@ public class BlogPost {
 
     public boolean hasAttachment() {
         return attachment != null;
+    }
+
+    public boolean isDraft() {
+        return draft;
+    }
+
+    public void setDraft(boolean draft) {
+        this.draft = draft;
+    }
+
+    public boolean isFavourite() {
+        return favourite;
+    }
+
+    public void setFavourite(boolean favourite) {
+        this.favourite = favourite;
     }
 }

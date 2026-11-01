@@ -31,6 +31,8 @@ public final class BlogPostRepository {
                     + "p.body AS p_body, "
                     + "p.created_at AS p_created_at, "
                     + "p.updated_at AS p_updated_at, "
+                    + "p.is_draft AS p_is_draft, "
+                    + "p.is_favourite AS p_is_favourite, "
                     + "a.id AS a_id, "
                     + "a.post_id AS a_post_id, "
                     + "a.relative_path AS a_relative_path, "
@@ -112,7 +114,9 @@ public final class BlogPostRepository {
                         )
                 ),
 
-                attachment
+                attachment,
+                cursor.getInt(cursor.getColumnIndexOrThrow("p_is_draft")) != 0,
+                cursor.getInt(cursor.getColumnIndexOrThrow("p_is_favourite")) != 0
         );
     }
 
@@ -271,9 +275,89 @@ public final class BlogPostRepository {
     }
 
     /**
+     * The library needs every matching post to keep its visible counts,
+     * filters and sorting consistent. Search text remains a bound literal.
+     */
+    public List<BlogPost> findLibrary(String query) {
+        Objects.requireNonNull(query, "query");
+
+        if (query.isEmpty()) {
+            return queryPosts(
+                    readableDatabase(),
+                    SELECT_POST + NEWEST_FIRST,
+                    new String[0]
+            );
+        }
+
+        String pattern = SearchUtils.literalContainsPattern(query);
+        return queryPosts(
+                readableDatabase(),
+                SELECT_POST + SEARCH_SELECTION + NEWEST_FIRST,
+                new String[]{pattern, pattern}
+        );
+    }
+
+    /**
+     * Changes only favourite metadata; favouriting is not a text edit.
+     * Returns null if the post does not exist.
+     */
+    public BlogPost setFavourite(long id, boolean favourite) {
+        return updateFlag(id, "is_favourite", favourite, null);
+    }
+
+    /** Returns null if the post does not exist. */
+    public BlogPost setDraft(long id, boolean draft, long timestamp) {
+        return updateFlag(id, "is_draft", draft, timestamp);
+    }
+
+    private BlogPost updateFlag(long id, String column, boolean value, Long timestamp) {
+        SQLiteDatabase database = writableDatabase();
+        database.beginTransaction();
+
+        try {
+            BlogPost existing = findById(database, id);
+            if (existing == null) {
+                database.setTransactionSuccessful();
+                return null;
+            }
+
+            boolean currentValue = "is_draft".equals(column)
+                    ? existing.isDraft()
+                    : existing.isFavourite();
+            if (currentValue == value) {
+                database.setTransactionSuccessful();
+                return existing;
+            }
+
+            // Column names are fixed by the two callers above, never user input.
+            ContentValues values = new ContentValues();
+            values.put(column, value ? 1 : 0);
+            if (timestamp != null) {
+                values.put("updated_at", Math.max(timestamp, existing.getUpdatedAt()));
+            }
+
+            int changed = database.update(
+                    InkNoteDbHelper.POSTS,
+                    values,
+                    "id = ?",
+                    new String[]{Long.toString(id)}
+            );
+            if (changed != 1) {
+                throw new SQLiteException("Unexpected post metadata update row count.");
+            }
+
+            BlogPost updated = findById(database, id);
+            database.setTransactionSuccessful();
+            return updated;
+        } finally {
+            database.endTransaction();
+        }
+    }
+
+    /**
      * Returns null if the post does not exist.
      * <p>
-     * Preserves created_at and attachment metadata.
+     * Preserves created_at, attachment metadata, and library flags.
      */
     public BlogPost update(
             long id,
@@ -322,7 +406,9 @@ public final class BlogPostRepository {
                     body,
                     existing.getCreatedAt(),
                     updatedAt,
-                    existing.getAttachment()
+                    existing.getAttachment(),
+                    existing.isDraft(),
+                    existing.isFavourite()
             );
 
             database.setTransactionSuccessful();

@@ -10,7 +10,7 @@ import java.util.Map;
 public final class InkNoteDbHelper extends SQLiteOpenHelper {
 
     public static final String DATABASE_NAME = "inknest.db";
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 2;
 
     public static final String POSTS = "blog_posts";
     public static final String ATTACHMENTS = "post_attachments";
@@ -24,7 +24,11 @@ public final class InkNoteDbHelper extends SQLiteOpenHelper {
                     + "created_at INTEGER NOT NULL "
                     + "CHECK(created_at >= 0), "
                     + "updated_at INTEGER NOT NULL "
-                    + "CHECK(updated_at >= created_at)"
+                    + "CHECK(updated_at >= created_at), "
+                    + "is_draft INTEGER NOT NULL DEFAULT 0 "
+                    + "CHECK(is_draft IN (0, 1)), "
+                    + "is_favourite INTEGER NOT NULL DEFAULT 0 "
+                    + "CHECK(is_favourite IN (0, 1))"
                     + ")";
 
     private static final String CREATE_ATTACHMENTS =
@@ -57,13 +61,23 @@ public final class InkNoteDbHelper extends SQLiteOpenHelper {
      * Key: source schema version.
      * Value: migration from that version to the next version.
      *
-     * Version 1 is the initial schema, so there are currently
-     * no historical migrations.
-     *
-     * Register a migration before increasing DATABASE_VERSION.
+     * Existing posts remain normal, non-favourite posts when
+     * upgrading the initial schema. No content or attachments
+     * are recreated or discarded.
      */
     private static final Map<Integer, Migration> MIGRATIONS =
-            Collections.emptyMap();
+            Collections.singletonMap(1, database -> {
+                database.execSQL(
+                        "ALTER TABLE blog_posts ADD COLUMN "
+                                + "is_draft INTEGER NOT NULL DEFAULT 0 "
+                                + "CHECK(is_draft IN (0, 1))"
+                );
+                database.execSQL(
+                        "ALTER TABLE blog_posts ADD COLUMN "
+                                + "is_favourite INTEGER NOT NULL DEFAULT 0 "
+                                + "CHECK(is_favourite IN (0, 1))"
+                );
+            });
 
     public InkNoteDbHelper(Context context) {
         super(

@@ -111,6 +111,45 @@ public final class BlogPostService {
         );
     }
 
+    /**
+     * All matching local posts, with flags, for library filtering and sorting.
+     * Call on the application's shared I/O executor.
+     */
+    public ServiceResult<List<BlogPost>> getLibraryPosts(String query) {
+        return execute(
+                AppLogger.Operation.LIST_LIBRARY,
+                () -> repository.findLibrary(InputValidator.searchQuery(query))
+        );
+    }
+
+    public ServiceResult<BlogPost> setFavourite(long id, boolean favourite) {
+        return execute(
+                AppLogger.Operation.SET_FAVOURITE,
+                () -> {
+                    InputValidator.requirePositiveId(id);
+                    BlogPost post = repository.setFavourite(id, favourite);
+                    if (post == null) {
+                        throw new PostNotFoundException();
+                    }
+                    return post;
+                }
+        );
+    }
+
+    public ServiceResult<BlogPost> setDraft(long id, boolean draft) {
+        return execute(
+                AppLogger.Operation.SET_DRAFT,
+                () -> {
+                    InputValidator.requirePositiveId(id);
+                    BlogPost post = repository.setDraft(id, draft, nowUtcMillis());
+                    if (post == null) {
+                        throw new PostNotFoundException();
+                    }
+                    return post;
+                }
+        );
+    }
+
     public ServiceResult<BlogPost> updatePost(
             long id,
             String title,

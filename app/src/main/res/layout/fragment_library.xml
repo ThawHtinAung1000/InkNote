@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent" android:layout_height="match_parent"
+    android:background="@color/inknest_background">
+
+    <LinearLayout
+        android:layout_width="0dp" android:layout_height="0dp" android:orientation="vertical"
+        app:layout_constraintWidth_max="720dp"
+        app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent" app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="64dp" android:orientation="horizontal" android:gravity="center_vertical"
+            android:paddingStart="16dp" android:paddingEnd="4dp" android:paddingTop="8dp" android:paddingBottom="8dp"
+            android:background="@color/inknest_card">
+            <ImageView
+                android:layout_width="36dp" android:layout_height="36dp" android:padding="8dp"
+                android:background="@drawable/bg_library_logo" android:src="@drawable/ic_welcome_feather"
+                android:contentDescription="@null" android:importantForAccessibility="no" />
+            <TextView android:id="@+id/brand_name"
+                android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                android:layout_marginStart="8dp" android:layout_marginEnd="8dp"
+                android:text="@string/welcome_brand" android:textAppearance="@style/TextAppearance.InkNest.Library.Brand" />
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content" android:minHeight="24dp"
+                android:paddingStart="10dp" android:paddingEnd="10dp" android:paddingTop="4dp" android:paddingBottom="4dp"
+                android:gravity="center" android:background="@drawable/bg_library_badge_success"
+                android:text="@string/library_on_device" android:textSize="12sp" android:textFontWeight="700"
+                android:textColor="@color/inknest_success_foreground" />
+            <ImageButton android:id="@+id/profile"
+                style="@style/Widget.InkNest.Library.IconButton"
+                android:padding="7dp" android:src="@drawable/ic_library_profile"
+                android:contentDescription="@string/library_profile" />
+        </LinearLayout>
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/inknest_outline_variant" />
+
+        <androidx.coordinatorlayout.widget.CoordinatorLayout
+            android:id="@+id/content_coordinator"
+            android:layout_width="match_parent" android:layout_height="0dp" android:layout_weight="1">
+
+            <com.google.android.material.appbar.AppBarLayout android:id="@+id/library_app_bar"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:background="@color/inknest_background" app:elevation="0dp"
+                app:liftOnScroll="false">
+
+                <LinearLayout
+                    android:layout_width="match_parent" android:layout_height="wrap_content"
+                    android:orientation="vertical" app:layout_scrollFlags="scroll|enterAlways">
+                    <TextView
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginTop="20dp"
+                        android:accessibilityHeading="true"
+                        android:text="@string/library_title" android:textAppearance="@style/TextAppearance.InkNest.Library.Heading" />
+
+                    <LinearLayout
+                        android:layout_width="match_parent" android:layout_height="wrap_content" android:minHeight="48dp"
+                        android:orientation="horizontal" android:gravity="center_vertical"
+                        android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginTop="12dp"
+                        android:background="@drawable/bg_library_search" android:paddingStart="14dp" android:paddingEnd="0dp">
+                        <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                            android:src="@drawable/ic_library_search" app:tint="@color/inknest_muted_foreground"
+                            android:contentDescription="@null" android:importantForAccessibility="no" />
+                        <EditText android:id="@+id/search"
+                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                            android:minHeight="48dp" android:layout_marginStart="10dp"
+                            android:paddingTop="10dp" android:paddingBottom="10dp"
+                            android:background="@null" android:hint="@string/library_search_hint"
+                            android:inputType="text" android:imeOptions="actionSearch" android:singleLine="true"
+                            android:textSize="15sp" android:textColor="@color/inknest_foreground"
+                            android:textColorHint="@color/inknest_muted_foreground" android:importantForAutofill="no" />
+                        <ImageButton android:id="@+id/filter_options"
+                            style="@style/Widget.InkNest.Library.IconButton"
+                            android:src="@drawable/ic_library_filter" app:tint="@color/inknest_muted_foreground"
+                            android:contentDescription="@string/library_filter_options" />
+                    </LinearLayout>
+
+                    <LinearLayout android:id="@+id/offline_banner"
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp" android:layout_marginEnd="16dp" android:layout_marginTop="12dp"
+                        android:orientation="horizontal" android:gravity="center_vertical"
+                        android:background="@drawable/bg_library_banner"
+                        android:paddingStart="14dp" android:paddingEnd="4dp" android:paddingTop="10dp" android:paddingBottom="10dp">
+                        <ImageView
+                            android:layout_width="32dp" android:layout_height="32dp" android:padding="7dp"
+                            android:background="@drawable/bg_welcome_benefit_icon" android:src="@drawable/ic_welcome_offline"
+                            android:contentDescription="@null" android:importantForAccessibility="no" />
+                        <LinearLayout
+                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                            android:layout_marginStart="10dp" android:orientation="vertical">
+                            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                                android:text="@string/library_offline_title" android:textSize="13sp" android:textFontWeight="700"
+                                android:textColor="@color/inknest_primary" />
+                            <TextView android:layout_width="match_parent" android:layout_height="wrap_content"
+                                android:layout_marginTop="2dp" android:text="@string/library_offline_body"
+                                android:textAppearance="@style/TextAppearance.InkNest.Library.Caption"
+                                android:textColor="@color/inknest_on_surface_variant" />
+                        </LinearLayout>
+                        <ImageButton android:id="@+id/dismiss_banner"
+                            style="@style/Widget.InkNest.Library.IconButton"
+                            android:src="@drawable/ic_library_close" app:tint="@color/inknest_muted_foreground"
+                            android:contentDescription="@string/library_dismiss_banner" />
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:orientation="horizontal" android:gravity="center_vertical"
+                        android:paddingStart="8dp" android:paddingEnd="12dp">
+                        <com.google.android.material.tabs.TabLayout android:id="@+id/filter_tabs"
+                            android:layout_width="0dp" android:layout_height="wrap_content" android:layout_weight="1"
+                            android:background="@color/inknest_background"
+                            app:tabMode="scrollable" app:tabMinWidth="0dp"
+                            app:tabPaddingStart="0dp" app:tabPaddingEnd="0dp"
+                            app:tabIndicatorColor="@color/inknest_primary" app:tabIndicatorHeight="2.5dp" />
+                        <View android:layout_width="1dp" android:layout_height="24dp" android:background="@color/inknest_outline_variant" />
+                        <com.google.android.material.button.MaterialButton android:id="@+id/sort"
+                            style="@style/Widget.InkNest.Library.TextButton"
+                            android:layout_width="wrap_content" android:layout_height="wrap_content"
+                            android:text="@string/library_sort" app:icon="@drawable/ic_library_sort"
+                            app:iconSize="14dp" app:iconPadding="5dp" app:iconTint="@color/inknest_primary" />
+                    </LinearLayout>
+                    <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/inknest_outline_variant" />
+                </LinearLayout>
+            </com.google.android.material.appbar.AppBarLayout>
+
+            <FrameLayout android:layout_width="match_parent" android:layout_height="match_parent"
+                app:layout_behavior="@string/appbar_scrolling_view_behavior">
+                <androidx.recyclerview.widget.RecyclerView android:id="@+id/messages"
+                    android:layout_width="match_parent" android:layout_height="match_parent"
+                    android:paddingStart="16dp" android:paddingEnd="16dp" android:paddingBottom="96dp"
+                    android:clipToPadding="false" />
+                <androidx.core.widget.NestedScrollView android:id="@+id/state_panel"
+                    android:layout_width="match_parent" android:layout_height="match_parent"
+                    android:fillViewport="true" android:visibility="gone">
+                    <LinearLayout
+                        android:layout_width="match_parent" android:layout_height="wrap_content"
+                        android:padding="24dp" android:orientation="vertical" android:gravity="center">
+                    <ProgressBar android:id="@+id/loading"
+                        android:layout_width="48dp" android:layout_height="48dp"
+                        android:contentDescription="@string/library_loading" />
+                    <TextView android:id="@+id/state_title"
+                        android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="16dp"
+                        android:gravity="center" android:accessibilityHeading="true"
+                        android:textAppearance="@style/TextAppearance.InkNest.Library.Title" />
+                    <TextView android:id="@+id/state_description"
+                        android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp"
+                        android:gravity="center" android:accessibilityLiveRegion="polite"
+                        android:textAppearance="@style/TextAppearance.InkNest.Library.Excerpt" />
+                    <com.google.android.material.button.MaterialButton android:id="@+id/retry"
+                        style="@style/Widget.InkNest.Library.TextButton"
+                        android:layout_width="wrap_content" android:layout_height="wrap_content" android:layout_marginTop="12dp"
+                        android:text="@string/library_retry" />
+                    </LinearLayout>
+                </androidx.core.widget.NestedScrollView>
+            </FrameLayout>
+
+            <com.google.android.material.floatingactionbutton.FloatingActionButton android:id="@+id/new_message"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:layout_gravity="bottom|end" android:layout_margin="20dp"
+                android:src="@drawable/ic_welcome_pencil" android:contentDescription="@string/library_new_message"
+                app:backgroundTint="@color/inknest_primary" app:tint="@color/inknest_primary_foreground"
+                app:fabCustomSize="60dp" app:maxImageSize="26dp"
+                app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.InkNest.LibraryFab" />
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+        <View android:layout_width="match_parent" android:layout_height="1dp" android:background="@color/inknest_outline_variant" />
+        <com.google.android.material.bottomnavigation.BottomNavigationView android:id="@+id/bottom_navigation"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:minHeight="68dp" android:background="@color/inknest_card" app:backgroundTint="@color/inknest_card"
+            app:menu="@menu/menu_library_bottom" app:labelVisibilityMode="labeled"
+            app:itemIconTint="@color/library_nav_tint" app:itemTextColor="@color/library_nav_tint"
+            app:itemTextAppearanceActive="@style/TextAppearance.InkNest.Library.Nav"
+            app:itemTextAppearanceInactive="@style/TextAppearance.InkNest.Library.Nav"
+            app:itemHorizontalTranslationEnabled="false" />
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

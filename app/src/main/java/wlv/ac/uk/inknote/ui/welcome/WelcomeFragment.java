@@ -19,6 +19,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import wlv.ac.uk.inknote.R;
 import wlv.ac.uk.inknote.databinding.FragmentWelcomeBinding;
+import wlv.ac.uk.inknote.ui.library.LibraryFragment;
 
 public final class WelcomeFragment extends Fragment {
 
@@ -41,7 +42,7 @@ public final class WelcomeFragment extends Fragment {
         super.onViewCreated(view, savedInstanceState);
 
         SpannableString brand = new SpannableString(getString(R.string.welcome_brand));
-        int accentStart = brand.toString().indexOf("Nest");
+        int accentStart = brand.toString().startsWith("Ink") ? 3 : -1;
         if (accentStart >= 0) {
             brand.setSpan(
                     new ForegroundColorSpan(ContextCompat.getColor(requireContext(), R.color.inknest_primary)),
@@ -60,14 +61,19 @@ public final class WelcomeFragment extends Fragment {
                 return;
             }
 
-            // Screen designs arrive individually. Do not launch a missing destination or
-            // persist onboarding completion until the corresponding screen is implemented.
+            if (destination == WelcomeViewModel.Destination.POSTS) {
+                viewModel.destinationHandled();
+                getParentFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, LibraryFragment.class, null)
+                        .commit();
+                return;
+            }
+
+            // The editor design is still pending; the library is now available through Skip.
             if (destinationNotice != null) {
                 destinationNotice.dismiss();
             }
-            int message = destination == WelcomeViewModel.Destination.EDITOR
-                    ? R.string.welcome_editor_pending
-                    : R.string.welcome_posts_pending;
+            int message = R.string.welcome_editor_pending;
             destinationNotice = Snackbar.make(binding.getRoot(), message, Snackbar.LENGTH_INDEFINITE)
                     .setAction(R.string.welcome_dismiss, clicked -> { });
             TextView noticeText = destinationNotice.getView().findViewById(

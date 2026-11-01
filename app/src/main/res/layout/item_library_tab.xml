@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content" android:layout_height="wrap_content"
+    android:minHeight="48dp" android:gravity="center" android:orientation="horizontal"
+    android:paddingStart="8dp" android:paddingEnd="8dp"
+    android:importantForAccessibility="noHideDescendants">
+    <TextView android:id="@+id/tab_label"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:textAppearance="@style/TextAppearance.InkNest.Library"
+        android:textColor="@color/inknest_muted_foreground" />
+    <TextView android:id="@+id/tab_count"
+        android:layout_width="wrap_content" android:layout_height="wrap_content"
+        android:layout_marginStart="6dp" android:minWidth="18dp" android:minHeight="18dp"
+        android:gravity="center" android:paddingStart="5dp" android:paddingEnd="5dp"
+        android:background="@drawable/bg_welcome_benefit_icon"
+        android:textSize="10sp" android:textFontWeight="700"
+        android:textColor="@color/inknest_primary" />
+</LinearLayout>
