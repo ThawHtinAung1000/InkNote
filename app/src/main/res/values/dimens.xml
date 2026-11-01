@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Main typography -->
+    <dimen name="inknest_text_display">22sp</dimen>
+    <dimen name="inknest_text_headline">20sp</dimen>
+    <dimen name="inknest_text_title">17sp</dimen>
+    <dimen name="inknest_text_body">15sp</dimen>
+    <dimen name="inknest_text_body_medium">15sp</dimen>
+    <dimen name="inknest_text_label">13sp</dimen>
+    <dimen name="inknest_text_caption">12sp</dimen>
+    <dimen name="inknest_text_overline">11sp</dimen>
+    <dimen name="inknest_text_micro">10sp</dimen>
+
+    <!-- Actions and statuses -->
+    <dimen name="inknest_text_button">15sp</dimen>
+    <dimen name="inknest_text_chip">13sp</dimen>
+    <dimen name="inknest_text_success">12sp</dimen>
+    <dimen name="inknest_text_error">13sp</dimen>
+    <dimen name="inknest_text_warning">12sp</dimen>
+
+</resources>
