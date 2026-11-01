@@ -8,6 +8,11 @@ android {
         version = release(37)
     }
 
+    buildFeatures {
+        buildConfig = true
+        viewBinding = true
+    }
+
     defaultConfig {
         applicationId = "wlv.ac.uk.inknote"
         minSdk = 31
@@ -27,8 +32,8 @@ android {
         }
     }
     compileOptions {
-        sourceCompatibility = JavaVersion.VERSION_11
-        targetCompatibility = JavaVersion.VERSION_11
+        sourceCompatibility = JavaVersion.VERSION_17
+        targetCompatibility = JavaVersion.VERSION_17
     }
 }
 
