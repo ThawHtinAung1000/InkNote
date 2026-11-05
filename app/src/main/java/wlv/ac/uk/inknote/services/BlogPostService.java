@@ -2,6 +2,7 @@ package wlv.ac.uk.inknote.services;
 
 
 import android.database.sqlite.SQLiteException;
+import android.net.Uri;
 import android.os.SystemClock;
 
 import java.io.IOException;
@@ -65,6 +66,95 @@ public final class BlogPostService {
                     );
                 }
         );
+    }
+
+    public ServiceResult<BlogPost> saveEditor(
+            long id, String editorKey, String title, String body, String bodyFormat,
+            List<String> tags, boolean draft
+    ) {
+        return execute(
+                AppLogger.Operation.SAVE_EDITOR,
+                () -> {
+                    if (id < 0) {
+                        InputValidator.requirePositiveId(id);
+                    }
+                    String validKey = id > 0 && editorKey == null
+                            ? null : InputValidator.editorKey(editorKey);
+                    String validTitle = InputValidator.optionalTitle(title);
+                    String validBody = InputValidator.editorBody(body, draft);
+                    String validFormat = InputValidator.editorBodyFormat(bodyFormat, validBody);
+                    List<String> validTags = InputValidator.editorTags(tags);
+
+                    BlogPost post = repository.saveEditor(
+                            id, validKey, validTitle, validBody, validFormat, validTags,
+                            draft, nowUtcMillis()
+                    );
+                    if (post == null) {
+                        throw new PostNotFoundException();
+                    }
+                    return post;
+                }
+        );
+    }
+
+    public ServiceResult<BlogPost> importPhoto(long id, Uri uri) {
+        return execute(
+                AppLogger.Operation.IMPORT_PHOTO,
+                () -> {
+                    InputValidator.requirePositiveId(id);
+                    if (uri == null) {
+                        throw new InputValidator.InvalidInputException("Choose a photo first.");
+                    }
+                    if (repository.findById(id) == null) {
+                        throw new PostNotFoundException();
+                    }
+
+                    // The operation lock covers file creation and reference commit, so startup
+                    // or deletion cleanup cannot remove the new retained image in between.
+                    AttachmentFiles.ImportedPhoto imported = attachmentFiles.importPhoto(uri);
+                    try {
+                        BlogPost post = repository.replaceAttachment(
+                                id, imported.getRelativePath(), imported.getMimeType(), nowUtcMillis()
+                        );
+                        if (post == null) {
+                            throw new PostNotFoundException();
+                        }
+                        cleanupAfterCommittedFileChange();
+                        return post;
+                    } catch (RuntimeException failure) {
+                        cleanupFailedImport(imported.getRelativePath());
+                        throw failure;
+                    }
+                }
+        );
+    }
+
+    public ServiceResult<BlogPost> removePhoto(long id) {
+        return execute(
+                AppLogger.Operation.REMOVE_PHOTO,
+                () -> {
+                    InputValidator.requirePositiveId(id);
+                    BlogPost post = repository.replaceAttachment(id, null, null, nowUtcMillis());
+                    if (post == null) {
+                        throw new PostNotFoundException();
+                    }
+                    cleanupAfterCommittedFileChange();
+                    return post;
+                }
+        );
+    }
+
+    private void cleanupFailedImport(String relativePath) {
+        try {
+            // A commit error can have an uncertain outcome. Prefer an orphan for later cleanup
+            // over deleting a file that SQLite may already reference.
+            if (!repository.getReferencedAttachmentPaths().contains(relativePath)) {
+                attachmentFiles.deleteImportedPhoto(relativePath);
+            }
+        } catch (IOException | RuntimeException failure) {
+            AppLogger.failure(AppLogger.Operation.CLEANUP_IMAGES, failure);
+            AppLogger.cleanupPending();
+        }
     }
 
     public ServiceResult<BlogPost> getPostById(long id) {
@@ -141,6 +231,13 @@ public final class BlogPostService {
                 AppLogger.Operation.SET_DRAFT,
                 () -> {
                     InputValidator.requirePositiveId(id);
+                    if (!draft) {
+                        BlogPost existing = repository.findById(id);
+                        if (existing == null) {
+                            throw new PostNotFoundException();
+                        }
+                        InputValidator.requiredBody(existing.getBody());
+                    }
                     BlogPost post = repository.setDraft(id, draft, nowUtcMillis());
                     if (post == null) {
                         throw new PostNotFoundException();
@@ -233,7 +330,7 @@ public final class BlogPostService {
 
                     return new DeleteSummary(
                             deletedCount,
-                            cleanupAfterCommittedDelete()
+                            cleanupAfterCommittedFileChange()
                     );
                 }
         );
@@ -260,7 +357,7 @@ public final class BlogPostService {
 
                     boolean cleanupPending =
                             deletedCount > 0
-                                    && cleanupAfterCommittedDelete();
+                                    && cleanupAfterCommittedFileChange();
 
                     return new DeleteSummary(
                             deletedCount,
@@ -291,12 +388,10 @@ public final class BlogPostService {
     }
 
     /**
-     * SQLite deletion has already committed.
-     * <p>
-     * File cleanup failures must not incorrectly report that
-     * the database deletion failed.
+     * The SQLite content or attachment change has already committed.
+     * File cleanup failure must not incorrectly report that the reference change failed.
      */
-    private boolean cleanupAfterCommittedDelete() {
+    private boolean cleanupAfterCommittedFileChange() {
         try {
             AttachmentFiles.Cleanup cleanup =
                     attachmentFiles.removeUnreferenced(

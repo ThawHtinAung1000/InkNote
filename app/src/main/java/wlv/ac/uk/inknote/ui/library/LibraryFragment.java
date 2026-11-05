@@ -36,6 +36,8 @@ import wlv.ac.uk.inknote.R;
 import wlv.ac.uk.inknote.databinding.FragmentLibraryBinding;
 import wlv.ac.uk.inknote.databinding.ItemLibraryTabBinding;
 import wlv.ac.uk.inknote.model.BlogPost;
+import wlv.ac.uk.inknote.ui.editor.EditorFragment;
+import wlv.ac.uk.inknote.ui.editor.EditorNavigation;
 
 public final class LibraryFragment extends Fragment implements LibraryAdapter.Actions {
     private FragmentLibraryBinding binding;
@@ -82,6 +84,8 @@ public final class LibraryFragment extends Fragment implements LibraryAdapter.Ac
                     binding.statePanel.setPadding(0, 0, 0, visibleHeader);
                 });
 
+        getParentFragmentManager().setFragmentResultListener(EditorFragment.RESULT_CHANGED, getViewLifecycleOwner(),
+                (key, result) -> viewModel.refresh());
         setupTabs();
         binding.search.setText(viewModel.getQuery());
         binding.search.addTextChangedListener(new TextWatcher() {
@@ -105,7 +109,7 @@ public final class LibraryFragment extends Fragment implements LibraryAdapter.Ac
         binding.filterOptions.setOnClickListener(clicked -> showFilters());
         binding.sort.setOnClickListener(clicked -> sort());
         binding.profile.setOnClickListener(clicked -> showNotice(getString(R.string.library_profile_pending)));
-        binding.newMessage.setOnClickListener(clicked -> showNotice(getString(R.string.welcome_editor_pending)));
+        binding.newMessage.setOnClickListener(clicked -> { hideKeyboard(); EditorNavigation.open(this, 0); });
         binding.retry.setOnClickListener(clicked -> viewModel.refresh());
         binding.bottomNavigation.setOnItemSelectedListener(item -> {
             if (item.getItemId() == R.id.nav_library) return true;
@@ -231,7 +235,8 @@ public final class LibraryFragment extends Fragment implements LibraryAdapter.Ac
     }
 
     @Override public void open(BlogPost post) {
-        showNotice(getString(R.string.library_detail_pending));
+        if (post.isDraft()) { hideKeyboard(); EditorNavigation.open(this, post.getId()); }
+        else showNotice(getString(R.string.library_detail_pending));
     }
     @Override public void favourite(BlogPost post) { viewModel.setFavourite(post); }
     @Override public void seeAllFavourites() { viewModel.setFilter(LibraryContent.Filter.FAVOURITES); }
@@ -242,9 +247,11 @@ public final class LibraryFragment extends Fragment implements LibraryAdapter.Ac
         popup.getMenu().add(0, 1, 0, post.isDraft() ? R.string.library_mark_saved : R.string.library_mark_draft);
         popup.getMenu().add(0, 2, 1, R.string.library_share_text);
         popup.getMenu().add(0, 3, 2, R.string.library_delete);
+        popup.getMenu().add(0, 4, 3, R.string.editor_edit_action);
         popup.setOnMenuItemClickListener(item -> {
             if (item.getItemId() == 1) viewModel.setDraft(post);
             else if (item.getItemId() == 2) viewModel.shareText(post.getId());
+            else if (item.getItemId() == 4) { hideKeyboard(); EditorNavigation.open(this, post.getId()); }
             else confirmDelete(post);
             return true;
         });

@@ -1,0 +1,408 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/inknest_background">
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        app:layout_constraintWidth_max="720dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="64dp"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingStart="4dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:background="@color/inknest_card">
+
+            <ImageButton
+                android:id="@+id/back"
+                style="@style/Widget.InkNest.Editor.IconButton"
+                android:src="@drawable/ic_editor_back"
+                app:tint="@color/inknest_foreground"
+                android:contentDescription="@string/editor_back" />
+
+            <TextView
+                android:id="@+id/screen_title"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:layout_marginStart="4dp"
+                android:layout_marginEnd="12dp"
+                android:accessibilityHeading="true"
+                android:text="@string/editor_new_message"
+                android:textAppearance="@style/TextAppearance.InkNest.Editor.ScreenTitle" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/save"
+                style="@style/Widget.InkNest.Editor.SaveButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/editor_save" />
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/inknest_outline_variant" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="36dp"
+            android:paddingStart="16dp"
+            android:paddingEnd="16dp"
+            android:paddingTop="6dp"
+            android:paddingBottom="6dp"
+            android:orientation="vertical"
+            android:background="@drawable/bg_library_status">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:gravity="center_vertical">
+
+                <ImageView
+                    android:layout_width="16dp"
+                    android:layout_height="16dp"
+                    android:layout_marginEnd="6dp"
+                    android:src="@drawable/ic_library_device"
+                    app:tint="@color/inknest_muted_foreground"
+                    android:contentDescription="@null"
+                    android:importantForAccessibility="no" />
+
+                <TextView
+                    android:id="@+id/status_text"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_marginEnd="8dp"
+                    android:accessibilityLiveRegion="polite"
+                    android:text="@string/editor_not_saved"
+                    android:textAppearance="@style/TextAppearance.InkNest.Editor.Caption" />
+
+                <TextView
+                    android:id="@+id/draft_badge"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:paddingStart="8dp"
+                    android:paddingEnd="8dp"
+                    android:paddingTop="3dp"
+                    android:paddingBottom="3dp"
+                    android:background="@drawable/bg_library_draft"
+                    android:text="@string/editor_draft"
+                    android:textSize="11sp"
+                    android:textFontWeight="700"
+                    android:textColor="@color/inknest_warning_foreground" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/status_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="22dp"
+                android:textAppearance="@style/TextAppearance.InkNest.Editor.Caption" />
+        </LinearLayout>
+
+        <ProgressBar
+            android:id="@+id/loading"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="3dp"
+            android:indeterminate="true"
+            android:contentDescription="@string/editor_loading"
+            android:visibility="gone" />
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/editor_scroll"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true"
+            android:clipToPadding="false"
+            android:scrollbars="vertical">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:paddingStart="20dp"
+                android:paddingEnd="20dp"
+                android:paddingTop="12dp"
+                android:paddingBottom="24dp">
+
+                <LinearLayout
+                    android:id="@+id/banner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="12dp"
+                    android:orientation="vertical"
+                    android:padding="14dp"
+                    android:background="@drawable/bg_library_banner"
+                    android:visibility="gone"
+                    android:accessibilityLiveRegion="polite">
+
+                    <TextView
+                        android:id="@+id/banner_title"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:accessibilityHeading="true"
+                        android:textAppearance="@style/TextAppearance.InkNest.Editor.BannerTitle" />
+
+                    <TextView
+                        android:id="@+id/banner_message"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:textAppearance="@style/TextAppearance.InkNest.Editor"
+                        android:textColor="@color/inknest_on_surface_variant" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/retry_save"
+                        style="@style/Widget.InkNest.Library.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="4dp"
+                        android:layout_gravity="start"
+                        android:text="@string/editor_retry_save" />
+
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/cancel_photo"
+                        style="@style/Widget.InkNest.Library.TextButton"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="start"
+                        android:visibility="gone"
+                        android:text="@string/editor_cancel_photo_change" />
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/title_input"
+                    style="@style/Widget.InkNest.Editor.Input"
+                    android:minHeight="56dp"
+                    android:hint="@string/editor_title_hint"
+                    android:inputType="textCapSentences|textMultiLine"
+                    android:textSize="22sp"
+                    android:textFontWeight="700"
+                    android:freezesText="false"
+                    android:saveEnabled="false" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:background="@color/inknest_outline_variant" />
+
+                <wlv.ac.uk.inknote.ui.editor.SelectionEditText
+                    android:id="@+id/body_input"
+                    style="@style/Widget.InkNest.Editor.Input"
+                    android:minHeight="220dp"
+                    android:layout_marginTop="6dp"
+                    android:hint="@string/editor_body_hint"
+                    android:inputType="textCapSentences|textMultiLine|textAutoCorrect"
+                    android:textSize="16sp"
+                    android:lineSpacingExtra="6dp"
+                    android:scrollbars="none"
+                    android:freezesText="false"
+                    android:saveEnabled="false" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"
+                    android:layout_marginBottom="20dp"
+                    android:orientation="horizontal"
+                    android:gravity="center_vertical">
+
+                    <TextView
+                        android:id="@+id/word_count"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:layout_marginEnd="12dp"
+                        android:text="@string/editor_word_count_initial"
+                        android:textAppearance="@style/TextAppearance.InkNest.Editor.Caption" />
+
+                    <TextView
+                        android:id="@+id/read_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/editor_read_time_initial"
+                        android:textAppearance="@style/TextAppearance.InkNest.Editor.Caption" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/photo_section"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_marginBottom="20dp"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:text="@string/editor_photo"
+                        android:textAppearance="@style/TextAppearance.InkNest.Editor.Section" />
+
+                    <com.google.android.material.card.MaterialCardView
+                        android:layout_width="match_parent"
+                        android:layout_height="160dp"
+                        app:cardCornerRadius="12dp"
+                        app:cardElevation="0dp"
+                        app:strokeWidth="1dp"
+                        app:strokeColor="@color/inknest_outline_variant"
+                        app:cardBackgroundColor="@color/inknest_muted">
+
+                        <FrameLayout
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent">
+
+                            <ImageView
+                                android:id="@+id/photo_preview"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:scaleType="centerCrop"
+                                android:src="@drawable/ic_welcome_photo"
+                                android:contentDescription="@string/editor_photo_description" />
+
+                            <ImageButton
+                                android:id="@+id/remove_photo"
+                                style="@style/Widget.InkNest.Editor.IconButton"
+                                android:layout_gravity="top|end"
+                                android:layout_margin="8dp"
+                                android:background="@drawable/bg_editor_photo_remove"
+                                android:src="@drawable/ic_library_close"
+                                app:tint="@color/inknest_muted_foreground"
+                                android:contentDescription="@string/editor_remove_photo" />
+                        </FrameLayout>
+                    </com.google.android.material.card.MaterialCardView>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="6dp"
+                        android:text="@string/editor_photo_local"
+                        android:textAppearance="@style/TextAppearance.InkNest.Editor.Caption" />
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
+                    android:text="@string/editor_tags"
+                    android:textAppearance="@style/TextAppearance.InkNest.Editor.Section" />
+
+                <com.google.android.material.chip.ChipGroup
+                    android:id="@+id/tags_chip_group"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:chipSpacingHorizontal="8dp"
+                    app:chipSpacingVertical="8dp"
+                    app:singleLine="false" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/add_tag"
+                    style="@style/Widget.InkNest.Library.TextButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="start"
+                    android:text="@string/editor_add_tag"
+                    app:icon="@drawable/ic_editor_plus"
+                    app:iconSize="16dp"
+                    app:iconPadding="6dp"
+                    app:iconTint="@color/inknest_primary"
+                    app:strokeColor="@color/inknest_outline_variant"
+                    app:strokeWidth="1dp"
+                    app:cornerRadius="20dp" />
+            </LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:background="@color/inknest_outline_variant" />
+
+        <HorizontalScrollView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:minHeight="64dp"
+            android:background="@color/inknest_card"
+            android:fillViewport="true"
+            android:scrollbars="none">
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:minHeight="64dp"
+                android:orientation="horizontal"
+                android:gravity="center_vertical"
+                android:paddingStart="8dp"
+                android:paddingEnd="8dp"
+                android:paddingTop="8dp"
+                android:paddingBottom="8dp">
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/format_bold"
+                    style="@style/Widget.InkNest.Editor.FormatButton"
+                    app:icon="@drawable/ic_editor_bold"
+                    android:contentDescription="@string/editor_format_bold" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/format_italic"
+                    style="@style/Widget.InkNest.Editor.FormatButton"
+                    app:icon="@drawable/ic_editor_italic"
+                    android:contentDescription="@string/editor_format_italic" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/format_bullet"
+                    style="@style/Widget.InkNest.Editor.FormatButton"
+                    app:icon="@drawable/ic_editor_bullet"
+                    android:contentDescription="@string/editor_format_bullet" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/format_quote"
+                    style="@style/Widget.InkNest.Editor.FormatButton"
+                    app:icon="@drawable/ic_editor_quote"
+                    android:contentDescription="@string/editor_format_quote" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="24dp"
+                    android:layout_marginStart="8dp"
+                    android:layout_marginEnd="8dp"
+                    android:background="@color/inknest_outline_variant" />
+
+                <ImageButton
+                    android:id="@+id/hide_keyboard"
+                    style="@style/Widget.InkNest.Editor.IconButton"
+                    android:src="@drawable/ic_editor_chevron_down"
+                    app:tint="@color/inknest_muted_foreground"
+                    android:contentDescription="@string/editor_hide_keyboard"
+                    android:visibility="gone" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/add_photo"
+                    style="@style/Widget.InkNest.Editor.AddPhotoButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:text="@string/editor_add_photo" />
+            </LinearLayout>
+        </HorizontalScrollView>
+    </LinearLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

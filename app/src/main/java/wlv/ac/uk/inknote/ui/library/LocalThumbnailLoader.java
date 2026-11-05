@@ -15,10 +15,10 @@ import wlv.ac.uk.inknote.utils.AppExecutors;
 import wlv.ac.uk.inknote.utils.AttachmentFiles;
 
 /** Bounded local previews; no network requests and no file access on the UI thread. */
-final class LocalThumbnailLoader {
-    static final class Request {
+public final class LocalThumbnailLoader {
+    public static final class Request {
         volatile boolean cancelled;
-        void cancel() { cancelled = true; }
+        public void cancel() { cancelled = true; }
     }
 
     private final Context appContext;
@@ -28,12 +28,12 @@ final class LocalThumbnailLoader {
     };
     private volatile boolean closed;
 
-    LocalThumbnailLoader(Context context, AppExecutors executors) {
+    public LocalThumbnailLoader(Context context, AppExecutors executors) {
         this.appContext = context.getApplicationContext();
         this.executors = executors;
     }
 
-    Request load(ImageView image, String name) {
+    public Request load(ImageView image, String name) {
         Request request = new Request();
         image.setImageResource(R.drawable.ic_welcome_photo);
         Bitmap cached = cache.get(name);
@@ -79,7 +79,7 @@ final class LocalThumbnailLoader {
         }
     }
 
-    void close() {
+    public void close() {
         closed = true;
         cache.evictAll();
     }

@@ -2,6 +2,7 @@ package wlv.ac.uk.inknote.ui.library;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,6 +12,9 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.chip.Chip;
+import com.google.android.material.chip.ChipGroup;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -57,6 +61,7 @@ final class LibraryAdapter extends ListAdapter<LibraryAdapter.Row, RecyclerView.
             return a.isFavourite() == b.isFavourite() && a.isDraft() == b.isDraft()
                     && a.getUpdatedAt() == b.getUpdatedAt() && Objects.equals(a.getTitle(), b.getTitle())
                     && Objects.equals(a.getBody(), b.getBody())
+                    && Objects.equals(a.getTags(), b.getTags())
                     && Objects.equals(aa == null ? null : aa.getRelativePath(), ba == null ? null : ba.getRelativePath());
         }
     };
@@ -125,10 +130,11 @@ final class LibraryAdapter extends ListAdapter<LibraryAdapter.Row, RecyclerView.
         binding.postExcerpt.setText(post.getBody());
         binding.postDate.setText(dateFormat.format(post.getUpdatedAt()));
         binding.draftBadge.setVisibility(post.isDraft() ? View.VISIBLE : View.GONE);
+        bindTags(binding.postTags, post.getTags());
         int words = LibraryContent.wordCount(post.getBody());
         binding.wordCount.setText(context.getResources().getQuantityString(R.plurals.library_words, words, words));
         binding.attachmentOrReadTime.setText(post.hasAttachment() ? context.getString(R.string.library_one_photo)
-                : context.getString(R.string.library_read_time, Math.max(1, (words + 199) / 200)));
+                : context.getString(R.string.library_read_time, (words + 199) / 200));
         binding.favourite.setImageResource(post.isFavourite() ? R.drawable.ic_library_star_filled : R.drawable.ic_library_star);
         binding.favourite.setImageTintList(ColorStateList.valueOf(ContextCompat.getColor(context,
                 post.isFavourite() ? R.color.inknest_library_star : R.color.inknest_muted_foreground)));
@@ -151,6 +157,37 @@ final class LibraryAdapter extends ListAdapter<LibraryAdapter.Row, RecyclerView.
         } else {
             binding.hero.setVisibility(View.VISIBLE);
             postHolder.request = images.load(binding.hero, relativePath);
+        }
+    }
+
+    private static void bindTags(ChipGroup group, List<String> tags) {
+        group.removeAllViews();
+        group.setVisibility(tags.isEmpty() ? View.GONE : View.VISIBLE);
+        Context context = group.getContext();
+        float density = context.getResources().getDisplayMetrics().density;
+        for (String tag : tags) {
+            Chip chip = new Chip(context);
+            chip.setText(tag);
+            chip.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+            chip.setTextColor(ContextCompat.getColor(context, R.color.inknest_on_primary_container));
+            chip.setChipBackgroundColor(ColorStateList.valueOf(
+                    ContextCompat.getColor(context, R.color.inknest_primary_container)));
+            chip.setEnsureMinTouchTargetSize(false);
+            chip.setMinHeight(0);
+            chip.setMinWidth(0);
+            chip.setChipMinHeight(20 * density);
+            chip.setChipStartPadding(8 * density);
+            chip.setChipEndPadding(8 * density);
+            chip.setTextStartPadding(0);
+            chip.setTextEndPadding(0);
+            chip.setChipStrokeWidth(0);
+            chip.setCloseIconVisible(false);
+            chip.setChipIconVisible(false);
+            chip.setCheckedIconVisible(false);
+            chip.setCheckable(false);
+            chip.setClickable(false);
+            chip.setFocusable(false);
+            group.addView(chip);
         }
     }
 

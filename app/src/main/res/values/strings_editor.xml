@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="editor_new_message">New message</string>
+    <string name="editor_edit_message">Edit message</string>
+    <string name="editor_back">Back to library</string>
+    <string name="editor_draft">Draft</string>
+    <string name="editor_save">Save</string>
+    <string name="editor_not_saved">Not saved yet</string>
+    <string name="editor_title_hint">Title (optional)</string>
+    <string name="editor_body_hint">Write your message…</string>
+    <string name="editor_retry_save">Try again</string>
+    <string name="editor_word_count_initial">0 words</string>
+    <string name="editor_read_time_initial">0 min read</string>
+    <string name="editor_read_time">%1$d min read</string>
+    <plurals name="editor_words">
+        <item quantity="one">%1$d word</item>
+        <item quantity="other">%1$d words</item>
+    </plurals>
+    <string name="editor_photo">Photo</string>
+    <string name="editor_photo_description">Attached photo</string>
+    <string name="editor_remove_photo">Remove photo</string>
+    <string name="editor_photo_local">Photos stay on this device.</string>
+    <string name="editor_tags">Tags</string>
+    <string name="editor_add_tag">Add tag</string>
+    <string name="editor_format_bold">Bold</string>
+    <string name="editor_format_italic">Italic</string>
+    <string name="editor_format_bullet">Bullet list</string>
+    <string name="editor_format_quote">Quote</string>
+    <string name="editor_hide_keyboard">Hide keyboard</string>
+    <string name="editor_add_photo">Add photo</string>
+    <string name="editor_loading">Loading message</string>
+</resources>

@@ -33,6 +33,13 @@
                     android:textSize="11sp" android:textFontWeight="700" android:textColor="@color/inknest_warning_foreground"
                     android:visibility="gone" />
             </LinearLayout>
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/post_tags"
+                android:layout_width="match_parent" android:layout_height="wrap_content"
+                android:layout_marginTop="8dp" android:visibility="gone"
+                android:clickable="false" android:focusable="false"
+                app:chipSpacingHorizontal="6dp" app:chipSpacingVertical="4dp"
+                app:singleLine="false" />
             <TextView android:id="@+id/post_title"
                 android:layout_width="match_parent" android:layout_height="wrap_content" android:layout_marginTop="8dp"
                 android:maxLines="2" android:ellipsize="end"

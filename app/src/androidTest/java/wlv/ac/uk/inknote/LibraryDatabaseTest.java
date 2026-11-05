@@ -86,14 +86,22 @@ public final class LibraryDatabaseTest {
         assertEquals(37L, retained.getAttachment().getPostId());
         assertEquals("retained.jpg", retained.getAttachment().getRelativePath());
         assertEquals("image/jpeg", retained.getAttachment().getMimeType());
-        assertEquals(2, helper.getReadableDatabase().getVersion());
+        assertEquals(3, helper.getReadableDatabase().getVersion());
+        assertEquals("", retained.getBodyFormat());
+        assertTrue(retained.getTags().isEmpty());
         assertEquals(1, repository.findLibrary("").size());
 
         assertInvalidFlagRejected(37L, "is_draft");
         assertInvalidFlagRejected(37L, "is_favourite");
 
         BlogPost next = repository.insert("After migration", "New body", 200L);
-        assertTrue(next.getId() > retained.getId());
+        assertTrue(next.getId() > 100L);
+        BlogPost nextPhoto = repository.replaceAttachment(
+                retained.getId(), "replacement.jpg", "image/jpeg", 300L
+        );
+        assertNotNull(nextPhoto);
+        assertNotNull(nextPhoto.getAttachment());
+        assertTrue(nextPhoto.getAttachment().getId() > 200L);
     }
 
     @Test
@@ -247,6 +255,19 @@ public final class LibraryDatabaseTest {
                             + "VALUES (?, ?, ?, ?)",
                     new Object[]{9L, 37L, "retained.jpg", "image/jpeg"}
             );
+            // Deleted high IDs still reserve their AUTOINCREMENT sequence after an upgrade.
+            database.execSQL(
+                    "INSERT INTO blog_posts (id, title, body, created_at, updated_at) "
+                            + "VALUES (?, ?, ?, ?, ?)",
+                    new Object[]{100L, "Deleted", "Deleted body", 200L, 200L}
+            );
+            database.execSQL(
+                    "INSERT INTO post_attachments (id, post_id, relative_path, mime_type) "
+                            + "VALUES (?, ?, ?, ?)",
+                    new Object[]{200L, 100L, "deleted.jpg", "image/jpeg"}
+            );
+            database.delete("post_attachments", "id = ?", new String[]{"200"});
+            database.delete("blog_posts", "id = ?", new String[]{"100"});
             database.setVersion(1);
         }
     }
@@ -263,6 +284,11 @@ public final class LibraryDatabaseTest {
         @Override
         public Context getApplicationContext() {
             return this;
+        }
+
+        @Override
+        public File getFilesDir() {
+            return new File(directory, "files");
         }
 
         @Override

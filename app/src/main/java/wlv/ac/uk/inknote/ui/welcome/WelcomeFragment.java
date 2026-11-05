@@ -23,6 +23,7 @@ import com.google.android.material.snackbar.Snackbar;
 import wlv.ac.uk.inknote.R;
 import wlv.ac.uk.inknote.databinding.FragmentWelcomeBinding;
 import wlv.ac.uk.inknote.ui.library.LibraryFragment;
+import wlv.ac.uk.inknote.ui.editor.EditorNavigation;
 
 public final class WelcomeFragment extends Fragment {
 
@@ -93,8 +94,7 @@ public final class WelcomeFragment extends Fragment {
                     .commit();
             viewModel.destinationHandled();
         } else {
-            // The editor remains pending while supplied screens are implemented individually.
-            showNotice(getString(R.string.welcome_editor_pending));
+            EditorNavigation.openFromWelcome(this);
             viewModel.destinationHandled();
         }
     }

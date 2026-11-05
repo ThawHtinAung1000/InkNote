@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="editor_empty_status">Start typing — drafts save automatically</string>
+    <string name="editor_unsaved_status">Changes waiting to save</string>
+    <string name="editor_saving_status">Saving to device…</string>
+    <string name="editor_importing_status">Adding photo…</string>
+    <string name="editor_autosaved_status">Draft autosaved to device</string>
+    <string name="editor_saved_status">Message saved to device</string>
+    <string name="editor_save_failed">Save failed</string>
+    <string name="editor_unsaved_draft">Unsaved draft</string>
+    <string name="editor_autosaved_badge">Autosaved draft</string>
+    <string name="editor_saved_badge">Saved</string>
+    <string name="editor_saved_banner_title">Saved on this device</string>
+    <string name="editor_saved_banner_body">Your message, formatting, tags, and attached photo are stored locally.</string>
+    <string name="editor_failure_body">%1$s Your current input is still here. Retry before leaving.</string>
+    <string name="editor_last_saved">Last saved %1$s</string>
+    <string name="editor_tag_hint">Tag name</string>
+    <string name="editor_tag_add">Add</string>
+    <string name="editor_remove_tag">Remove tag %1$s</string>
+    <string name="editor_photo_picker_error">The photo picker is unavailable. Your text is preserved here.</string>
+    <string name="editor_loading_failed">Message unavailable</string>
+    <string name="editor_saved_edit">Edit message</string>
+    <string name="editor_edit_action">Edit message</string>
+</resources>

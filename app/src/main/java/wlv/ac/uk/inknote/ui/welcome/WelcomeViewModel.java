@@ -44,13 +44,14 @@ public final class WelcomeViewModel extends AndroidViewModel {
     }
 
     public void startWriting() {
-        if (!Boolean.TRUE.equals(saving.getValue())) {
-            // The editor destination is still pending and must not complete onboarding.
-            pendingDestination.setValue(Destination.EDITOR);
-        }
+        completeIntroduction(Destination.EDITOR);
     }
 
     public void skipIntroduction() {
+        completeIntroduction(Destination.POSTS);
+    }
+
+    private void completeIntroduction(Destination destination) {
         if (Boolean.TRUE.equals(saving.getValue())) {
             return;
         }
@@ -67,7 +68,7 @@ public final class WelcomeViewModel extends AndroidViewModel {
                     }
                     saving.setValue(false);
                     if (result.isSuccess()) {
-                        pendingDestination.setValue(Destination.POSTS);
+                        pendingDestination.setValue(destination);
                     } else {
                         error.setValue(result.getFailure().getMessage());
                     }

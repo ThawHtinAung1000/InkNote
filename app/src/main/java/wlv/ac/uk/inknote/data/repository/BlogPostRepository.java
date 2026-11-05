@@ -6,6 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteException;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -33,6 +36,8 @@ public final class BlogPostRepository {
                     + "p.updated_at AS p_updated_at, "
                     + "p.is_draft AS p_is_draft, "
                     + "p.is_favourite AS p_is_favourite, "
+                    + "p.body_format AS p_body_format, "
+                    + "p.tags_json AS p_tags_json, "
                     + "a.id AS a_id, "
                     + "a.post_id AS a_post_id, "
                     + "a.relative_path AS a_relative_path, "
@@ -89,7 +94,7 @@ public final class BlogPostRepository {
             );
         }
 
-        return new BlogPost(
+        BlogPost post = new BlogPost(
                 cursor.getLong(
                         cursor.getColumnIndexOrThrow("p_id")
                 ),
@@ -118,6 +123,28 @@ public final class BlogPostRepository {
                 cursor.getInt(cursor.getColumnIndexOrThrow("p_is_draft")) != 0,
                 cursor.getInt(cursor.getColumnIndexOrThrow("p_is_favourite")) != 0
         );
+        post.setBodyFormat(cursor.getString(cursor.getColumnIndexOrThrow("p_body_format")));
+        post.setTags(decodeTags(cursor.getString(cursor.getColumnIndexOrThrow("p_tags_json"))));
+        return post;
+    }
+
+    private static List<String> decodeTags(String value) {
+        try {
+            JSONArray json = new JSONArray(value);
+            List<String> tags = new ArrayList<>();
+            for (int index = 0; index < json.length(); index++) {
+                Object tag = json.get(index);
+                if (!(tag instanceof String)) {
+                    throw new JSONException("Invalid stored tag.");
+                }
+                tags.add((String) tag);
+            }
+            return tags;
+        } catch (JSONException invalid) {
+            SQLiteException failure = new SQLiteException("Stored message metadata is invalid.");
+            failure.initCause(invalid);
+            throw failure;
+        }
     }
 
     private static ContentValues textValues(
@@ -196,6 +223,100 @@ public final class BlogPostRepository {
                 timestamp,
                 null
         );
+    }
+
+    /**
+     * Atomically inserts or updates an editor snapshot. The stable editor key makes
+     * retrying an insert safe if a process died before receiving its generated ID.
+     */
+    public BlogPost saveEditor(long id, String editorKey, String title, String body,
+                               String bodyFormat, List<String> tags, boolean draft,
+                               long timestamp) {
+        SQLiteDatabase database = writableDatabase();
+        database.beginTransaction();
+        try {
+            BlogPost existing = id > 0
+                    ? findById(database, id)
+                    : findByEditorKey(database, Objects.requireNonNull(editorKey, "editorKey"));
+            if (id > 0 && existing == null) {
+                database.setTransactionSuccessful();
+                return null;
+            }
+
+            ContentValues values = textValues(title, body);
+            values.put("body_format", bodyFormat);
+            values.put("tags_json", new JSONArray(tags).toString());
+            values.put("is_draft", draft ? 1 : 0);
+
+            long savedId;
+            if (existing == null) {
+                values.put("created_at", timestamp);
+                values.put("updated_at", timestamp);
+                values.put("editor_key", editorKey);
+                savedId = database.insertOrThrow(InkNoteDbHelper.POSTS, null, values);
+            } else {
+                savedId = existing.getId();
+                values.put("updated_at", Math.max(timestamp, existing.getUpdatedAt()));
+                int changed = database.update(
+                        InkNoteDbHelper.POSTS, values, "id = ?",
+                        new String[]{Long.toString(savedId)}
+                );
+                if (changed != 1) {
+                    throw new SQLiteException("Unexpected editor update row count.");
+                }
+            }
+            BlogPost saved = findById(database, savedId);
+            if (saved == null) {
+                throw new SQLiteException("The saved message could not be read.");
+            }
+            database.setTransactionSuccessful();
+            return saved;
+        } finally {
+            database.endTransaction();
+        }
+    }
+
+    /** A null relative path removes the current photo; metadata changes share one transaction. */
+    public BlogPost replaceAttachment(long id, String relativePath, String mimeType, long timestamp) {
+        SQLiteDatabase database = writableDatabase();
+        database.beginTransaction();
+        try {
+            BlogPost existing = findById(database, id);
+            if (existing == null) {
+                database.setTransactionSuccessful();
+                return null;
+            }
+            if (relativePath == null && existing.getAttachment() == null) {
+                database.setTransactionSuccessful();
+                return existing;
+            }
+            database.delete(
+                    InkNoteDbHelper.ATTACHMENTS, "post_id = ?",
+                    new String[]{Long.toString(id)}
+            );
+            if (relativePath != null) {
+                database.insertOrThrow(
+                        InkNoteDbHelper.ATTACHMENTS, null,
+                        attachmentValues(new PostAttachment(0L, id, relativePath, mimeType))
+                );
+            }
+            ContentValues changedAt = new ContentValues();
+            changedAt.put("updated_at", Math.max(timestamp, existing.getUpdatedAt()));
+            if (database.update(
+                    InkNoteDbHelper.POSTS, changedAt, "id = ?",
+                    new String[]{Long.toString(id)}
+            ) != 1) {
+                throw new SQLiteException("Unexpected photo update row count.");
+            }
+            BlogPost saved = findById(database, id);
+            if (saved == null) {
+                throw new SQLiteException("The updated message could not be read.");
+            }
+            database.setTransactionSuccessful();
+            return saved;
+        } finally {
+            database.endTransaction();
+        }
     }
 
     /**
@@ -400,16 +521,7 @@ public final class BlogPostRepository {
                 );
             }
 
-            BlogPost updated = new BlogPost(
-                    id,
-                    title,
-                    body,
-                    existing.getCreatedAt(),
-                    updatedAt,
-                    existing.getAttachment(),
-                    existing.isDraft(),
-                    existing.isFavourite()
-            );
+            BlogPost updated = findById(database, id);
 
             database.setTransactionSuccessful();
 
@@ -545,6 +657,15 @@ public final class BlogPostRepository {
             }
 
             return mapPost(cursor);
+        }
+    }
+
+    private BlogPost findByEditorKey(SQLiteDatabase database, String editorKey) {
+        try (Cursor cursor = database.rawQuery(
+                SELECT_POST + " WHERE p.editor_key = ?",
+                new String[]{editorKey}
+        )) {
+            return cursor.moveToFirst() ? mapPost(cursor) : null;
         }
     }
 

@@ -1,5 +1,9 @@
 package wlv.ac.uk.inknote.model;
 
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+
 public class BlogPost {
 
     private long id;
@@ -13,6 +17,8 @@ public class BlogPost {
     private PostAttachment attachment;
     private boolean draft;
     private boolean favourite;
+    private String bodyFormat = "";
+    private List<String> tags = Collections.emptyList();
 
     public BlogPost() {
     }
@@ -99,5 +105,22 @@ public class BlogPost {
 
     public void setFavourite(boolean favourite) {
         this.favourite = favourite;
+    }
+
+    public String getBodyFormat() {
+        return bodyFormat;
+    }
+
+    public void setBodyFormat(String bodyFormat) {
+        this.bodyFormat = bodyFormat == null ? "" : bodyFormat;
+    }
+
+    public List<String> getTags() {
+        return tags;
+    }
+
+    public void setTags(List<String> tags) {
+        this.tags = tags == null ? Collections.emptyList()
+                : Collections.unmodifiableList(new ArrayList<>(tags));
     }
 }
